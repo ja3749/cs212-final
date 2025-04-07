@@ -5,8 +5,25 @@
         <link id="appearance" href="./style.css" rel="stylesheet">
     </head>
     <body>
+        <!-- I am adding the header at the top which will add buttons for navigation Sydney --> 
+        <header>
+            <div class="nav">
+                <h1>Task Management Application</h1>
+                <nav>
+                    <a href="#">Dashboard</a>
+                    <a href="#">Statistics</a>
+                    <button>Search</button>
+                </nav>
+            </div>
 
-
+            <div class="welcome">
+                <h2>Welcome, user!</h2> <!-- I figured we could add an alert that asks for their name and use js to have it displayed here, but we can always cut that if we don't want it-->
+                <p>Today's date is: </p>
+                <p>You have _ amount of tasks to do today</p>
+                <button>Dashboard</button>
+            </div>
+        </header>
+        
         <section id="tasks">
             <h2>Tasks:</h2>
             <div id="taskList" class="row row-cols-1 row-cols-md-2 g-3"></div>
@@ -23,6 +40,13 @@
                 <br>
                 <button type="submit" id="submitTask" class="btn">Submit task</button>
             </form>
+        </section>
+
+        <section class="statistics">
+            <h2>Statistics</h2>
+            <p>Total number of tasks: </p>
+            <p>Completed Tasks: </p>
+            <p>Pending Tasks: </p>
         </section>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
