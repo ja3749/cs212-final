@@ -11,3 +11,4 @@ People often struggle to keep track of their tasks and to-dos. A simple task man
 
 **Searching tasks**: Search functionality is implemented to allow users to quickly find tasks based on keywords.
 
+**Sorting tasks**: Pending tasks can be sorted by due date and priority level.
