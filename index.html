@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Task Management Application</title>
+        <link id="appearance" href="./style.css" rel="stylesheet">
+    </head>
+    <body>
+
+
+        <section id="tasks">
+            <h2>Tasks:</h2>
+            <div id="taskList" class="row row-cols-1 row-cols-md-2 g-3"></div>
+            <form id="taskForm">
+                <label for="task">Enter the task's information</label>
+                <br>
+                <input type="text" id="taskTitle" name="taskTitle" class="form-control" placeholder="Enter the task's name" required>
+                <br>
+                <input type="text" id="taskDesc" name="taskDesc" class="form-control" placeholder="Enter the task's description" required>
+                <br>
+                <input type="date" id="taskDeadline" name="taskDeadlie" class="form-control" placeholder="Enter the task's due date" required>
+                <br>
+                <input type="number" id="taskPriority" name="taskPriority" step="1" min="0" max="4" class="quantity field rounded text-center w-25" placeholder="Enter the task's priority" required>
+                <br>
+                <button type="submit" id="submitTask" class="btn">Submit task</button>
+            </form>
+        </section>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="./app.js"></script>
+    </body>
+</html>
