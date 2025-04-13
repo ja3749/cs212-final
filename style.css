@@ -1,0 +1,133 @@
+body {
+    background-color: #FAF1E6;
+    font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+}
+
+header {
+    background-color: #BBDBB4;
+    color: #6A3E37;
+    padding: 20px;
+}
+
+header h1, header nav a, header nav button {
+    font-weight: 500;
+}
+
+header .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header nav a, header nav button {
+    margin: 0 10px;
+    color: #6A3E37;
+    text-decoration: none;
+}
+
+header nav a:hover {
+    color: #9E8FB2;
+}
+
+.hero-section {
+    position: relative;
+    background-image: url('floral.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.herostyle{
+    color: #FAF1E6;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.5); /* dark overlay */
+    z-index: 1;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: 0.3s ease-in-out;
+    background-color: #FAF1E6;
+    color: #6A3E37;
+}
+
+.card-img-top {
+    object-fit: cover;
+    height: 200px;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.taskCard .btn {
+    transition: 0.2s;
+}
+
+.taskCard .btn:hover {
+    opacity: 0.85;
+} 
+
+#taskForm {
+    background-color: #708871;
+    color: #6A3E37;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+#taskForm input,
+#taskForm label {
+    color: #6A3E37;
+    border-color: #6A3E37;
+}
+
+#tasks {
+    background-color: #CCD3CA;
+    color: #6A3E37;
+    padding: 30px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.statistics {
+    background-color: #BBDBB4;
+    color: #6A3E37;
+    padding: 30px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.btn{
+    background-color: #CEBBC9;
+    border-color:black;
+    color:#FAF1E6;
+}
+
+.btn:hover{
+    background-color: #594157;
+}
+
+.statistics img {
+    max-width: 250px; 
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    header .container > div:first-child {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
