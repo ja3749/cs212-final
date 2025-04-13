@@ -7,24 +7,33 @@
         <link id="appearance" href="./style.css" rel="stylesheet">
     </head>
     <body>
-        <!-- I am adding the header at the top which will add buttons for navigation Sydney --> 
-        <header>
-            <div class="nav">
-                <h1>Task Management Application</h1>
-                <nav>
-                    <a href="#">Dashboard</a>
-                    <a href="#">Statistics</a>
-                    <button>Search</button>
-                </nav>
-            </div>
+        <header class="mb-4">
+            <div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <h1 class="h3 mb-3 mb-md-0">Task Management Application</h1>
+                    <nav class="d-flex gap-3">
+                        <a href="#">Dashboard</a>
+                        <a href="#">Statistics</a>
+                        <button class="btn btn-sm">Search</button>
+                    </nav>
+                </div>
 
-            <div class="welcome">
-                <h2 id="greeting">Welcome, user!</h2> <!-- I figured we could add an alert that asks for their name and use js to have it displayed here, but we can always cut that if we don't want it-->
-                <p id="date">Today's date is: </p>
-                <p id="totalTasks">You have amount of tasks to do today</p>
-                <button class="btn btn-primary">Dashboard</button>
+            <hr />
+                <div class="text-center">
+                    <h2 id="greeting"></h2>
+                    <p id="date"></p>
+                    <p id="totalTasks"></p>
+                    <button class="btn">Dashboard</button>
+                </div>
             </div>
         </header>
+
+        <section class="hero-section text-center d-flex align-items-center" style="height: 300px;">
+            <div class="container">
+                <h1 class="herostyle display-5 fw-bold">Stay Organized, Stay Ahead</h1>
+                <p class="herostyle lead">Easily manage your tasks to boost your productivity</p>
+            </div>
+        </section>
         
         <section id="tasks">
             <h2>Tasks:</h2>
@@ -55,10 +64,20 @@
         </section>
 
         <section class="statistics">
-            <h2>Statistics</h2>
-            <p id="taskTotal">Total number of tasks:</p>
-            <p id="doneTaskTotal">Completed Tasks:</p>
-            <p id="penTaskTotal">Pending Tasks:</p>
+            <div class="row align-items-center">
+            <!-- Stats Column -->
+                <div class="col-md-6">
+                    <h2>Statistics</h2>
+                    <p id="taskTotal">Total number of tasks:</p>
+                    <p id="doneTaskTotal">Completed Tasks:</p>
+                    <p id="penTaskTotal">Pending Tasks:</p>
+                </div>
+
+            <!-- Img Column -->
+                <div class="col-md-6 text-center">
+                    <img src="flower2.webp" class="img-fluid rounded shadow">
+                </div>
+            </div>        
         </section>
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
