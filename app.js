@@ -73,9 +73,11 @@ $(document).ready(function () {
             
             // If there is a need to change the structure of the card, then you may change the code as needed! - J.
             if (tasks[i].completed) {
+                const cardClass = tasks[i].completed ? "bg-light text-muted border-success" : "bg-white"; //Added so that cards will look different when completed -S
                 $('#taskList').append(`
                     <div class="col taskCard" data-index="${i}">
-                        <div class="card p-3">
+                        <div class="card p-3 ${cardClass}">
+                        <img src="hero.png" class="card-img-top mb-2 rounded">
                             <h3>${tasks[i].title}</h3>
                             <p>Priority: <b>${getPriority(tasks[i].priority)}</b></p>
                             <p>${tasks[i].description}</p>
@@ -94,6 +96,7 @@ $(document).ready(function () {
                 $('#taskList').append(`
                     <div class="col taskCard" data-index="${i}">
                         <div class="card p-3">
+                        <img src="hero.png" class="card-img-top mb-2 rounded">
                             <h3>${tasks[i].title}</h3>
                             <p>Priority: <b>${getPriority(tasks[i].priority)}</b></p>
                             <p>${tasks[i].description}</p>
