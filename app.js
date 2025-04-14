@@ -3,6 +3,8 @@ $(document).ready(function () {
     const today = new Date();
     $('#date').html(`Today's date is ${today.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}.`)
 
+    $('#taskForm').hide();
+  
     // J: I added some code that preserves the user's name!
     let username = localStorage.getItem('username');
 
