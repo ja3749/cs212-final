@@ -1,10 +1,7 @@
 $(document).ready(function () {
   
     const today = new Date();
-    $('#date').html(`Today's date is ${today.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}.`)
-
-    $('#taskForm').hide();
-  
+    $('#date').html(`Today's date is ${today.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}.`)  
     // J: I added some code that preserves the user's name!
     let username = localStorage.getItem('username');
 
@@ -18,6 +15,8 @@ $(document).ready(function () {
 
         localStorage.setItem("username", username);
     }
+
+    $('#taskForm').hide();
 
     $('#greeting').html(`Welcome, ${username}!`);
 
