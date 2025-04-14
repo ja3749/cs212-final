@@ -146,16 +146,12 @@ $(document).ready(function () {
                 `);
             });
         }
-
-        // After this comment will be code that determines whether the task is completed or not
-        // for that visual distinction between pending and completed tasks every time
-        // the task is rendered. - J.
     }
 
     renderTasks();
 
     function addTask(tskTitle, tskDesc, tskDate, tskPriority) {
-        tasks.push({ title: $('#taskTitle').val().trim(), description: $('#taskDesc').val().trim(), deadline: $('#taskDeadline').val(), priority: $('#taskPriority').val(), completed: false} );
+        tasks.push({ title: tskTitle, description: tskDesc, deadline: tskDate, priority: tskPriority} );
         saveTasks();
         renderTasks();
         updateStats();
@@ -174,6 +170,11 @@ $(document).ready(function () {
 
         $('#taskTitle, #taskDesc, #taskDeadline, #taskPriority').val('');
     });
+
+    $('#taskForm').on('reset', function() {
+        $('#taskForm').hide();
+        $('.add-task').show();
+    })
     
     $(document).on('click', '.taskDel', function () {
         const index = $(this).closest('.taskCard').attr('data-index');
@@ -181,6 +182,11 @@ $(document).ready(function () {
         saveTasks();
         renderTasks();
         updateStats();
+    });
+
+    $(document).on('click', '.add-task', function () {
+        $('#taskForm').show();
+        $('.add-task').hide();
     });
 
     $(document).on('click', '.taskEdit', function () {
@@ -202,8 +208,8 @@ $(document).ready(function () {
                     <br>
                     <input type="number" id="newTaskPriority" name="taskPriority" step="1" min="0" max="4" class="quantity field rounded text-center w-25" placeholder="${tasks[i].priority}" value="${tasks[i].priority}" required="">
                     <br><br>
-                    <button type="submit" id="submitTask" class="btn btn-prinary">Edit task</button>
-                    <button type="reset" id="cancelEdit" class="btn btn-secondary">Cancel edits</button>
+                    <button type="submit" id="submitTask" class="btn btn-prinary"><i class="fa-solid fa-pencil"></i> Edit task</button>
+                    <button type="reset" id="cancelEdit" class="btn btn-secondary"><i class="fa-solid fa-window-close"></i> Cancel</button>
                 </form>
             `)
 
