@@ -1,5 +1,5 @@
 $(document).ready(function () {
-
+  
     const today = new Date();
     $('#date').html(`Today's date is ${today.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}.`)
 
@@ -22,6 +22,18 @@ $(document).ready(function () {
     let idOfTask = 0;
     let tasks = [];
 
+    function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+    
+    function loadTasks() {
+        const storedTasks = localStorage.getItem("tasks");
+        if (storedTasks) {
+            tasks = JSON.parse(storedTasks);
+        } 
+    }
+
+    loadTasks();
     
     function totalTasks(returnWhat) {
         let completedTaskCount = 0;
@@ -52,7 +64,7 @@ $(document).ready(function () {
         $('#penTaskTotal').html(`Pending Tasks: ${totalTasks("pending")}`);
         $('#totalTasks').html(`You have ${totalTasks("pending")} tasks to do today.`)
     }
-
+    
     updateStats();
 
     function getPriority(priorityNum) {
@@ -68,67 +80,90 @@ $(document).ready(function () {
 
     function renderTasks() {
         $('#taskList').empty();
+        $('#completedTaskList').empty();
+        
+        let pendingTasks = tasks.filter(task => !task.completed);
+        let completedTasks = tasks.filter(task => task.completed);
 
-        for (let i = 0; i < tasks.length; i++) {
-            
-            // If there is a need to change the structure of the card, then you may change the code as needed! - J.
-            if (tasks[i].completed) {
-                const cardClass = tasks[i].completed ? "bg-light text-muted border-success" : "bg-white"; //Added so that cards will look different when completed -S
+        // If there is a need to change the structure of the card, then you may change the code as needed! - J.
+        // Populate taskList
+        if (pendingTasks.length === 0) {
+            $('#taskList').append(`
+                <div class="col text-center">
+                    <p class="text-muted">No pending tasks found here.</p>
+                </div>
+            `);
+        } else {
+            pendingTasks.forEach((task, i) => {
                 $('#taskList').append(`
-                    <div class="col taskCard" data-index="${i}">
-                        <div class="card p-3 ${cardClass}">
-                        <img src="hero.png" class="card-img-top mb-2 rounded">
-                            <h3>${tasks[i].title}</h3>
-                            <p>Priority: <b>${getPriority(tasks[i].priority)}</b></p>
-                            <p>${tasks[i].description}</p>
-                            <div class="d-flex gap-2">
-                            <button class="taskStatus btn btn-warning"><i class="fa-solid fa-clock"></i></button>
-                            <button class="taskEdit btn btn-dark"><i class="fa-solid fa-pencil"></i></button>
-                            <button class="taskDel btn btn-danger" id="deleteTask"><i class="fa-solid fa-trash"></i></button>
-                            </div> <br>
-                            <br>
-                            <p>Due Date: ${tasks[i].deadline}</p>
-                            <div class="editMenu" data-index="${i}"></div>
-                        </div>
-                    </div>
-                `)
-            } else {
-                $('#taskList').append(`
-                    <div class="col taskCard" data-index="${i}">
+                    <div class="col taskCard" data-index="${tasks.indexOf(task)}">
                         <div class="card p-3">
-                        <img src="hero.png" class="card-img-top mb-2 rounded">
-                            <h3>${tasks[i].title}</h3>
-                            <p>Priority: <b>${getPriority(tasks[i].priority)}</b></p>
-                            <p>${tasks[i].description}</p>
+                            <img src="hero.png" class="card-img-top mb-2 rounded">
+                            <h3>${task.title}</h3>
+                            <p>Priority: <b>${getPriority(task.priority)}</b></p>
+                            <p>${task.description}</p>
                             <div class="d-flex gap-2">
-                            <button class="taskStatus btn btn-success"><i class="fa-solid fa-check"></i></button>
-                            <button class="taskEdit btn btn-dark"><i class="fa-solid fa-pencil"></i></button>
-                            <button class="taskDel btn btn-danger" id="deleteTask"><i class="fa-solid fa-trash"></i></button>
+                                <button class="taskStatus btn btn-success"><i class="fa-solid fa-check"></i></button>
+                                <button class="taskEdit btn btn-dark"><i class="fa-solid fa-pencil"></i></button>
+                                <button class="taskDel btn btn-danger" id="deleteTask"><i class="fa-solid fa-trash"></i></button>
                             </div> <br>
                             <br>
-                            <p>Due Date: ${tasks[i].deadline}</p>
-                            <div class="editMenu" data-index="${i}"></div>
+                            <p>Due Date: ${task.deadline}</p>
+                            <div class="editMenu" data-index="${tasks.indexOf(task)}"></div>
                         </div>
                     </div>
-                `)
-            }
+                `);
+            });
+        }
+    
+        // Populate completedTaskList
+        if (completedTasks.length === 0) {
+            $('#completedTaskList').append(`
+                <div class="col text-center">
+                    <p class="text-muted">No completed tasks found here.</p>
+                </div>
+            `);
+        } else {
+            completedTasks.forEach((task, i) => {
+                const cardClass = "bg-light text-muted border-success";
+                $('#completedTaskList').append(`
+                    <div class="col taskCard" data-index="${tasks.indexOf(task)}">
+                        <div class="card p-3 ${cardClass}">
+                            <img src="hero.png" class="card-img-top mb-2 rounded">
+                            <h3>${task.title}</h3>
+                            <p>Priority: <b>${getPriority(task.priority)}</b></p>
+                            <p>${task.description}</p>
+                            <div class="d-flex gap-2">
+                                <button class="taskStatus btn btn-warning"><i class="fa-solid fa-clock"></i></button>
+                                <button class="taskEdit btn btn-dark"><i class="fa-solid fa-pencil"></i></button>
+                                <button class="taskDel btn btn-danger" id="deleteTask"><i class="fa-solid fa-trash"></i></button>
+                            </div> <br>
+                            <br>
+                            <p>Due Date: ${task.deadline}</p>
+                            <div class="editMenu" data-index="${tasks.indexOf(task)}"></div>
+                        </div>
+                    </div>
+                `);
+            });
+        }
 
-            // After this comment will be code that determines whether the task is completed or not
-            // for that visual distinction between pending and completed tasks every time
-            // the task is rendered. - J.
-        } 
+        // After this comment will be code that determines whether the task is completed or not
+        // for that visual distinction between pending and completed tasks every time
+        // the task is rendered. - J.
     }
 
     renderTasks();
 
     function addTask(tskTitle, tskDesc, tskDate, tskPriority) {
         tasks.push({ title: $('#taskTitle').val().trim(), description: $('#taskDesc').val().trim(), deadline: $('#taskDeadline').val(), priority: $('#taskPriority').val(), completed: false} );
+        saveTasks();
         renderTasks();
         updateStats();
     }
 
     function delTask(index) {
         tasks.splice(index, 1);
+        saveTasks();
         renderTasks();
         updateStats();
     }
@@ -143,6 +178,9 @@ $(document).ready(function () {
     $(document).on('click', '.taskDel', function () {
         const index = $(this).closest('.taskCard').attr('data-index');
         delTask(index);
+        saveTasks();
+        renderTasks();
+        updateStats();
     });
 
     $(document).on('click', '.taskEdit', function () {
@@ -177,6 +215,7 @@ $(document).ready(function () {
             editButton.show();
             editMenu.empty();
 
+            saveTasks();
             renderTasks();
             updateStats();
         })
@@ -185,6 +224,7 @@ $(document).ready(function () {
             editButton.show();
             editMenu.empty();
 
+            saveTasks();
             renderTasks();
             updateStats();
         })
@@ -197,6 +237,7 @@ $(document).ready(function () {
         } else {
             tasks[index].completed = true;
         }
+        saveTasks();
         renderTasks();
         updateStats();
     });
