@@ -55,11 +55,16 @@
                     <br>
                     <input type="date" id="taskDeadline" name="taskDeadline" class="form-control" placeholder="Enter the task's due date" required>
                     <br>
-                    <label>Enter the task's priority. 0 = Highest, 4 = Lowest</label>
+                    <label>Enter the task's priority.</label>
                     <br>
-                    <input type="number" id="taskPriority" name="taskPriority" step="1" min="0" max="4" class="quantity field rounded text-center w-25" placeholder="Enter the task's priority" required>
-                    <br><br>
+                    <input type="radio" class="form-check-input" name="taskPriority" value="0" required> Highest <br>
+                    <input type="radio" class="form-check-input" name="taskPriority" value="1"> High <br>
+                    <input type="radio" class="form-check-input" name="taskPriority" value="2"> Medium <br>
+                    <input type="radio" class="form-check-input" name="taskPriority" value="3"> Low <br>
+                    <input type="radio" class="form-check-input" name="taskPriority" value="4"> Lowest <br>
+                    <br>
                     <button type="submit" id="submitTask" class="btn btn-info">Submit task</button>
+                    <button type="reset" id="closeMenu" class="btn btn-primary"><i class="fa fa-window-close"></i> Close</button>
                 </form>
             </div>
             <br>
