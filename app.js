@@ -252,5 +252,6 @@ $(document).ready(function () {
         
         renderTasks();
         updateStats();
+        saveTasks();
     });
 })
