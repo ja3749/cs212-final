@@ -1,9 +1,12 @@
 $(document).ready(function () {
-  
+
     const today = new Date();
-    $('#date').html(`Today's date is ${today.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}.`)  
+    $('#date').html(`Today's date is ${today.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}.`)
+
     // J: I added some code that preserves the user's name!
     let username = localStorage.getItem('username');
+
+    $('#taskForm').hide();
 
     if (!username) {
         username = prompt("Hey, there! What's your name?");
@@ -35,6 +38,7 @@ $(document).ready(function () {
     }
 
     loadTasks();
+
     
     function totalTasks(returnWhat) {
         let completedTaskCount = 0;
@@ -63,9 +67,9 @@ $(document).ready(function () {
         $('#taskTotal').html(`Total number of tasks: ${totalTasks("total")}`);
         $('#doneTaskTotal').html(`Completed Tasks: ${totalTasks("done")}`);
         $('#penTaskTotal').html(`Pending Tasks: ${totalTasks("pending")}`);
-        $('#totalTasks').html(`You have ${totalTasks("pending")} tasks to do today.`)
+        $('#totalTasks').html(`You have ${totalTasks("pending")} ${(totalTasks("pending") == 1) ? "task" : "tasks"} to do today.`);
     }
-    
+
     updateStats();
 
     function getPriority(priorityNum) {
@@ -160,14 +164,14 @@ $(document).ready(function () {
 
     function delTask(index) {
         tasks.splice(index, 1);
-        saveTasks();
         renderTasks();
         updateStats();
+        saveTasks();
     }
 
     $('#taskForm').on("submit", function (event) {
         event.preventDefault();
-        addTask($('#taskTitle').val().trim(), $('#taskDesc').val().trim(), $('#taskDeadline').val(), $('#taskPriority').val());
+        addTask($('#taskTitle').val().trim(), $('#taskDesc').val().trim(), $('#taskDeadline').val(), $('input[name="taskPriority"]:checked').val());
 
         $('#taskTitle, #taskDesc, #taskDeadline, #taskPriority').val('');
     });
@@ -180,9 +184,6 @@ $(document).ready(function () {
     $(document).on('click', '.taskDel', function () {
         const index = $(this).closest('.taskCard').attr('data-index');
         delTask(index);
-        saveTasks();
-        renderTasks();
-        updateStats();
     });
 
     $(document).on('click', '.add-task', function () {
@@ -207,33 +208,37 @@ $(document).ready(function () {
                     <br>
                     <label>Enter the task's new priority, if applicable.</label>
                     <br>
-                    <input type="number" id="newTaskPriority" name="taskPriority" step="1" min="0" max="4" class="quantity field rounded text-center w-25" placeholder="${tasks[i].priority}" value="${tasks[i].priority}" required="">
-                    <br><br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="0" required> Highest <br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="1"> High <br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="2"> Medium <br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="3"> Low <br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="4"> Lowest <br><br>
                     <button type="submit" id="submitTask" class="btn btn-prinary"><i class="fa-solid fa-pencil"></i> Edit task</button>
                     <button type="reset" id="cancelEdit" class="btn btn-secondary"><i class="fa-solid fa-window-close"></i> Cancel</button>
                 </form>
             `)
+        $(`input[name="newTaskPriority"][value="${tasks[i].priority}"]`).prop('checked', true);
 
         $('#editTaskForm').on('submit', function () {
             tasks[i].title = $('#newTaskTitle').val().trim();
             tasks[i].description = $('#newTaskDesc').val().trim();
             tasks[i].deadline = $('#newTaskDeadline').val();
-            tasks[i].priority = $('#newTaskPriority').val();
+            tasks[i].priority = $('input[name="newTaskPriority"]:checked').val();
             editButton.show();
             editMenu.empty();
 
-            saveTasks();
             renderTasks();
             updateStats();
+            saveTasks();
         })
 
         $('#editTaskForm').on('reset', function () {
             editButton.show();
             editMenu.empty();
 
-            saveTasks();
             renderTasks();
             updateStats();
+            saveTasks();
         })
     });
 
@@ -244,7 +249,7 @@ $(document).ready(function () {
         } else {
             tasks[index].completed = true;
         }
-        saveTasks();
+        
         renderTasks();
         updateStats();
     });
