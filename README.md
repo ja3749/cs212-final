@@ -19,9 +19,9 @@ The progress for this website is shown in two phases:
 
 | [sydg3649](https://github.com/sydg3649) | [grahamCrcker](https://github.com/grahamCrcker) | [ja3749](https://github.com/ja3749) |
 | --- | --- | --- |
-| Set up HTML + CSS structure | Add button to mark tasks as completed | Set up task form :white_check_mark: |
-| Design a basic UI | Apply CSS styling that distinguishes pending/completed tasks | Work towards displaying tasks on the dashboard :white_check_mark: |
-| Build a responsive layout | Save tasks to local storage | Implement CRUD functionality :white_check_mark: |
+| Set up HTML + CSS structure :white_check_mark: | Add button to mark tasks as completed :white_check_mark: | Set up task form :white_check_mark: |
+| Design a basic UI :white_check_mark: | Apply CSS styling that distinguishes pending/completed tasks :white_check_mark: | Work towards displaying tasks on the dashboard :white_check_mark: |
+| Build a responsive layout :white_check_mark: | Save tasks to local storage :white_check_mark: | Implement CRUD functionality :white_check_mark: |
 
 ### Phase 2
 
