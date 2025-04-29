@@ -119,7 +119,7 @@ $(document).ready(function () {
                 newCard.hide().appendTo('#taskList').fadeIn(300);
             });
         }
-    
+        
         // Populate completedTaskList
         if (completedTasks.length === 0) {
             $('#completedTaskList').append(`
@@ -154,6 +154,79 @@ $(document).ready(function () {
     }
 
     renderTasks();
+
+    // New: Search Functionality - Sydney G
+        $('#searchInput').on('input', function () {
+            const searchTerm = $(this).val().toLowerCase();
+            filterTasks(searchTerm);
+        });
+
+        function filterTasks(searchTerm) {
+            $('#taskList').empty();
+            $('#completedTaskList').empty();
+
+            let pendingTasks = tasks.filter(task => !task.completed && (task.title.toLowerCase().includes(searchTerm) || task.description.toLowerCase().includes(searchTerm)));
+            let completedTasks = tasks.filter(task => task.completed && (task.title.toLowerCase().includes(searchTerm) || task.description.toLowerCase().includes(searchTerm)));
+
+            // Populate pending tasks
+            if (pendingTasks.length === 0) {
+                        $('#taskList').append(`
+            <div class="col text-center">
+                <p class="text-muted">No matching pending tasks found.</p>
+            </div>
+        `);
+            } else {
+                pendingTasks.forEach((task, i) => {
+                    $('#taskList').append(`
+                        <div class="col taskCard" data-index="${tasks.indexOf(task)}">
+                            <div class="card p-3">
+                                <img src="hero.png" class="card-img-top mb-2 rounded">
+                                <h3>${task.title}</h3>
+                                <p>Priority: <b>${getPriority(task.priority)}</b></p>
+                                <p>${task.description}</p>
+                                <div class="d-flex gap-2">
+                                    <button class="taskStatus btn btn-success"><i class="fa-solid fa-check"></i></button>
+                                    <button class="taskEdit btn btn-dark"><i class="fa-solid fa-pencil"></i></button>
+                                    <button class="taskDel btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                </div> <br><br>
+                                <p>Due Date: ${task.deadline}</p>
+                                <div class="editMenu" data-index="${tasks.indexOf(task)}"></div>
+                            </div>
+                        </div>
+                    `);
+        });
+    }
+
+            // Populate Completed Tasks
+            if (completedTasks.length === 0) {
+                $('#completedTaskList').append(`
+                    <div class="col text-center">
+                        <p class="text-muted">No matching completed tasks found.</p>
+                    </div>
+                `);
+            } else {
+                completedTasks.forEach((task, i) => {
+                    const cardClass = "bg-light text-muted border-success";
+                    $('#completedTaskList').append(`
+                        <div class="col taskCard" data-index="${tasks.indexOf(task)}">
+                            <div class="card p-3 ${cardClass}">
+                                <img src="hero.png" class="card-img-top mb-2 rounded">
+                                <h3>${task.title}</h3>
+                                <p>Priority: <b>${getPriority(task.priority)}</b></p>
+                                <p>${task.description}</p>
+                                <div class="d-flex gap-2">
+                                    <button class="taskStatus btn btn-warning"><i class="fa-solid fa-clock"></i></button>
+                                    <button class="taskEdit btn btn-dark"><i class="fa-solid fa-pencil"></i></button>
+                                    <button class="taskDel btn btn-danger"><i class="fa-solid fa-trash"></i></button>
+                                </div> <br><br>
+                                <p>Due Date: ${task.deadline}</p>
+                                <div class="editMenu" data-index="${tasks.indexOf(task)}"></div>
+                            </div>
+                        </div>
+                    `);
+                });
+            }
+        }
 
     function addTask(tskTitle, tskDesc, tskDate, tskPriority) {
         tasks.push({ title: tskTitle, description: tskDesc, deadline: tskDate, priority: tskPriority, completed: false} );
@@ -224,28 +297,25 @@ $(document).ready(function () {
         editMenu.hide();
 
         editMenu.append(`
-            <form class="editTaskForm">
-                <b>Edit Task</b>
-                <input type="text" id="newTaskTitle" name="taskTitle" class="form-control" placeholder="${tasks[i].title}" value="${tasks[i].title}" required="">
-                <br>
-                <input type="text" id="newTaskDesc" name="taskDesc" class="form-control" placeholder="${tasks[i].description}" value="${tasks[i].description}" required="">
-                <br>
-                <input type="date" id="newTaskDeadline" name="taskDeadline" class="form-control" required="" value="${tasks[i].deadline}">
-                <br>
-                <label>Enter the task's new priority, if applicable.</label>
-                <br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="0" required> Highest <br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="1"> High <br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="2"> Medium <br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="3"> Low <br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="4"> Lowest <br><br>
-                <button type="submit" id="submitTask" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Edit task</button>
-                <button type="reset" id="cancelEdit" class="btn btn-secondary"><i class="fa-solid fa-window-close"></i> Cancel</button>
-            </form>
-        `);
-
-        editMenu.slideDown(300);
-
+                <form id="editTaskForm">
+                    <b>Edit Task</b>
+                    <input type="text" id="newTaskTitle" name="taskTitle" class="form-control" placeholder="${tasks[i].title}" value="${tasks[i].title}" required="">
+                    <br>
+                    <input type="text" id="newTaskDesc" name="taskDesc" class="form-control" placeholder="${tasks[i].description}" value="${tasks[i].description}" required="">
+                    <br>
+                    <input type="date" id="newTaskDeadline" name="taskDeadline" class="form-control" required="" value="${tasks[i].deadline}">
+                    <br>
+                    <label>Enter the task's new priority, if applicable.</label>
+                    <br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="0" required> Highest <br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="1"> High <br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="2"> Medium <br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="3"> Low <br>
+                    <input type="radio" class="form-check-input" name="newTaskPriority" value="4"> Lowest <br><br>
+                    <button type="submit" id="submitTask" class="btn btn-prinary"><i class="fa-solid fa-pencil"></i> Edit task</button>
+                    <button type="reset" id="cancelEdit" class="btn btn-secondary"><i class="fa-solid fa-window-close"></i> Cancel</button>
+                </form>
+            `)
         $(`input[name="newTaskPriority"][value="${tasks[i].priority}"]`).prop('checked', true);
 
         $('.editTaskForm').on('submit', function () {
