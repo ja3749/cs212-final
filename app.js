@@ -288,65 +288,85 @@ $(document).ready(function () {
         $('.add-task').slideUp();
     });
 
-    $(document).on('click', '.taskEdit', function () {
-        const editMenu = $(this).closest('.taskCard').find('.editMenu');
-        const editButton= $(this).closest('.taskCard').find('.taskEdit');
-        const i = $(this).closest('.taskCard').attr('data-index');
+    $(document).on('click', '.taskEdit', function (e) {
+        e.preventDefault();
+    
+        const taskCard = $(this).closest('.taskCard');
+        const editMenu = taskCard.find('.editMenu');
+        const editButton = taskCard.find('.taskEdit');
+        const i = taskCard.attr('data-index');
+    
         editButton.hide();
-
-        editMenu.hide();
-
-        editMenu.append(`
-                <form id="editTaskForm">
-                    <b>Edit Task</b>
-                    <input type="text" id="newTaskTitle" name="taskTitle" class="form-control" placeholder="${tasks[i].title}" value="${tasks[i].title}" required="">
-                    <br>
-                    <input type="text" id="newTaskDesc" name="taskDesc" class="form-control" placeholder="${tasks[i].description}" value="${tasks[i].description}" required="">
-                    <br>
-                    <input type="date" id="newTaskDeadline" name="taskDeadline" class="form-control" required="" value="${tasks[i].deadline}">
-                    <br>
-                    <label>Enter the task's new priority, if applicable.</label>
-                    <br>
-                    <input type="radio" class="form-check-input" name="newTaskPriority" value="0" required> Highest <br>
-                    <input type="radio" class="form-check-input" name="newTaskPriority" value="1"> High <br>
-                    <input type="radio" class="form-check-input" name="newTaskPriority" value="2"> Medium <br>
-                    <input type="radio" class="form-check-input" name="newTaskPriority" value="3"> Low <br>
-                    <input type="radio" class="form-check-input" name="newTaskPriority" value="4"> Lowest <br><br>
-                    <button type="submit" id="submitTask" class="btn btn-prinary"><i class="fa-solid fa-pencil"></i> Edit task</button>
-                    <button type="reset" id="cancelEdit" class="btn btn-secondary"><i class="fa-solid fa-window-close"></i> Cancel</button>
-                </form>
-            `)
-        $(`input[name="newTaskPriority"][value="${tasks[i].priority}"]`).prop('checked', true);
-
-        $('.editTaskForm').on('submit', function () {
-            tasks[i].title = $('#newTaskTitle').val().trim();
-            tasks[i].description = $('#newTaskDesc').val().trim();
-            tasks[i].deadline = $('#newTaskDeadline').val();
-            tasks[i].priority = $('input[name="newTaskPriority"]:checked').val();
-            
-            editMenu.slideUp(300, function() {
-                editButton.show();
-                editMenu.empty();
-
-                saveTasks();
-                updateStats();
-                renderTasks();
-            });
-        })
-
-        $('.editTaskForm').on('reset', function () {
-            editMenu.slideUp(300, function() {
-                editButton.show();
-                editMenu.empty();
-                
-                saveTasks();
-                updateStats();
-                renderTasks();
-            });
-        })
+    
+        editMenu.html(`
+            <form class="editTaskForm">
+                <b>Edit Task</b><br>
+                <input type="text" name="taskTitle" class="form-control taskTitleInput" placeholder="${tasks[i].title}" value="${tasks[i].title}" required>
+                <br>
+                <input type="text" name="taskDesc" class="form-control taskDescInput" placeholder="${tasks[i].description}" value="${tasks[i].description}" required>
+                <br>
+                <input type="date" name="taskDeadline" class="form-control taskDeadlineInput" required value="${tasks[i].deadline}">
+                <br>
+                <label>Enter the task's new priority, if applicable.</label><br>
+                <input type="radio" class="form-check-input" name="newTaskPriority" value="0" required> Highest <br>
+                <input type="radio" class="form-check-input" name="newTaskPriority" value="1"> High <br>
+                <input type="radio" class="form-check-input" name="newTaskPriority" value="2"> Medium <br>
+                <input type="radio" class="form-check-input" name="newTaskPriority" value="3"> Low <br>
+                <input type="radio" class="form-check-input" name="newTaskPriority" value="4"> Lowest <br><br>
+                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Edit task</button>
+                <button type="button" class="btn btn-secondary cancelEdit"><i class="fa-solid fa-window-close"></i> Cancel</button>
+            </form>
+        `);
+    
+        editMenu.find(`input[name="newTaskPriority"][value="${tasks[i].priority}"]`).prop('checked', true);
+        
+        editMenu.slideDown(300);
+    });
+    
+    $(document).on('submit', '.editTaskForm', function (e) {
+        e.preventDefault();
+    
+        const form = $(this);
+        const taskCard = form.closest('.taskCard');
+        const editMenu = taskCard.find('.editMenu');
+        const editButton = taskCard.find('.taskEdit');
+        const i = taskCard.attr('data-index');
+    
+        tasks[i].title = form.find('.taskTitleInput').val().trim();
+        tasks[i].description = form.find('.taskDescInput').val().trim();
+        tasks[i].deadline = form.find('.taskDeadlineInput').val();
+        tasks[i].priority = form.find('input[name="newTaskPriority"]:checked').val();
+    
+        editMenu.slideUp(300, function () {
+            editButton.show();
+            editMenu.empty();
+    
+            saveTasks();
+            updateStats();
+            renderTasks();
+        });
+    });
+    
+    $(document).on('click', '.cancelEdit', function (e) {
+        e.preventDefault();
+    
+        const form = $(this).closest('.editTaskForm');
+        const taskCard = form.closest('.taskCard');
+        const editMenu = taskCard.find('.editMenu');
+        const editButton = taskCard.find('.taskEdit');
+    
+        editMenu.slideUp(300, function () {
+            editButton.show();
+            editMenu.empty();
+    
+            saveTasks();
+            updateStats();
+            renderTasks();
+        });
     });
 
-    $(document).on('click', '.taskStatus', function () {
+
+    $(document).on('click', '.taskStatus', function() {
         const card = $(this).closest('.taskCard');
         const index = card.attr('data-index');
 
@@ -358,8 +378,12 @@ $(document).ready(function () {
             $('#taskList .text-center, #completedTaskList .text-center').remove();
 
             if (tasks[index].completed) {
+                card.find('.card')
+                    .addClass('bg-light text-muted border-success')
                 $('#completedTaskList').append(card);
             } else {
+                card.find('.card')
+                    .removeClass('bg-light text-muted border-success')
                 $('#taskList').append(card);
             }
             card.fadeIn(300, function() {
