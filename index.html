@@ -59,13 +59,16 @@
                     <br>
                     <input type="date" id="taskDeadline" name="taskDeadline" class="form-control" placeholder="Enter the task's due date" required>
                     <br>
-                    <label>Enter the task's priority.</label>
-                    <br>
-                    <input type="radio" class="form-check-input" name="taskPriority" value="0" required> Highest <br>
-                    <input type="radio" class="form-check-input" name="taskPriority" value="1"> High <br>
-                    <input type="radio" class="form-check-input" name="taskPriority" value="2"> Medium <br>
-                    <input type="radio" class="form-check-input" name="taskPriority" value="3"> Low <br>
-                    <input type="radio" class="form-check-input" name="taskPriority" value="4"> Lowest <br>
+                    <label>Select the task's priority.</label>
+                    <div class="mb-3">
+                        <select class="form-select" id="taskPriority" name="taskPriority">
+                          <option value="0">Highest</option>
+                          <option value="1">High</option>
+                          <option value="2">Medium</option>
+                          <option value="3">Low</option>
+                          <option value="4">Lowest</option>
+                        </select>
+                      </div>
                     <br>
                     <button type="submit" id="submitTask" class="btn btn-primary"><i class="fa fa-plus"></i> Add task</button>
                     <button type="reset" id="closeMenu" class="btn btn-primary"><i class="fa fa-window-close"></i> Close</button>

@@ -261,7 +261,7 @@ $(document).ready(function () {
 
     $('#taskForm').on("submit", function (event) {
         event.preventDefault();
-        addTask($('#taskTitle').val().trim(), $('#taskDesc').val().trim(), $('#taskDeadline').val(), $('input[name="taskPriority"]:checked').val());
+        addTask($('#taskTitle').val().trim(), $('#taskDesc').val().trim(), $('#taskDeadline').val(), $('#taskPriority').val());
 
         $('#taskTitle, #taskDesc, #taskDeadline, #taskPriority').val('');
         $('#taskForm')[0].reset();
@@ -307,18 +307,23 @@ $(document).ready(function () {
                 <br>
                 <input type="date" name="taskDeadline" class="form-control taskDeadlineInput" required value="${tasks[i].deadline}">
                 <br>
-                <label>Enter the task's new priority, if applicable.</label><br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="0" required> Highest <br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="1"> High <br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="2"> Medium <br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="3"> Low <br>
-                <input type="radio" class="form-check-input" name="newTaskPriority" value="4"> Lowest <br><br>
+                <label>Select the task's new priority, if applicable.</label>
+                    <div class="mb-3">
+                        <select class="form-select" id="newTaskPriority" name="taskPriority">
+                          <option value="0">Highest</option>
+                          <option value="1">High</option>
+                          <option value="2">Medium</option>
+                          <option value="3">Low</option>
+                          <option value="4">Lowest</option>
+                        </select>
+                      </div>
+                    <br>
                 <button type="submit" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Edit task</button>
                 <button type="button" class="btn btn-secondary cancelEdit"><i class="fa-solid fa-window-close"></i> Cancel</button>
             </form>
         `);
     
-        editMenu.find(`input[name="newTaskPriority"][value="${tasks[i].priority}"]`).prop('checked', true);
+        $(`#newTaskPriority`).val(tasks[i].priority);
         
         editMenu.slideDown(300);
     });
@@ -335,7 +340,7 @@ $(document).ready(function () {
         tasks[i].title = form.find('.taskTitleInput').val().trim();
         tasks[i].description = form.find('.taskDescInput').val().trim();
         tasks[i].deadline = form.find('.taskDeadlineInput').val();
-        tasks[i].priority = form.find('input[name="newTaskPriority"]:checked').val();
+        tasks[i].priority = form.find('#newTaskPriority').val();
     
         editMenu.slideUp(300, function () {
             editButton.show();
