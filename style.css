@@ -111,12 +111,14 @@ header nav a:hover {
 }
 
 .btn{
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
     background-color: #CEBBC9;
     border-color:black;
     color:#FAF1E6;
 }
 
 .btn:hover{
+    transform: scale(1.1);
     background-color: #594157;
 }
 
@@ -130,4 +132,11 @@ header nav a:hover {
         flex-direction: column;
         align-items: flex-start;
     }
+}
+
+.editMenu form {
+    margin-top: 15px;
+    padding: 10px;
+    background: #BBDBB4;
+    border-radius: 8px;
 }
