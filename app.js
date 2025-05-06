@@ -424,4 +424,9 @@ $(document).ready(function () {
         saveTasks();
         renderTasks();
     })
-})
+}) 
+
+document.getElementById('goToTasks').addEventListener('click', function() {
+    window.location.hash = 'tasks';
+  });
+
