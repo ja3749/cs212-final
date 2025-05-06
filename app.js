@@ -102,9 +102,9 @@ $(document).ready(function () {
                     <div class="col taskCard" data-index="${tasks.indexOf(task)}">
                         <div class="card p-3">
                             <img src="hero.png" class="card-img-top mb-2 rounded">
-                            <h3>${task.title}</h3>
+                            <h3 class="taskText">${task.title}</h3>
                             <p>Priority: <b>${getPriority(task.priority)}</b></p>
-                            <p>${task.description}</p>
+                            <p class="taskText">${task.description}</p>
                             <div class="d-flex gap-2">
                                 <button class="taskStatus btn btn-success"><i class="fa-solid fa-check"></i></button>
                                 <button class="taskEdit btn btn-dark"><i class="fa-solid fa-pencil"></i></button>
@@ -134,9 +134,9 @@ $(document).ready(function () {
                     <div class="col taskCard" data-index="${tasks.indexOf(task)}">
                         <div class="card p-3 ${cardClass}">
                             <img src="hero.png" class="card-img-top mb-2 rounded">
-                            <h3>${task.title}</h3>
+                            <h3 class="taskText">${task.title}</h3>
                             <p>Priority: <b>${getPriority(task.priority)}</b></p>
-                            <p>${task.description}</p>
+                            <p class="taskText">${task.description}</p>
                             <div class="d-flex gap-2">
                                 <button class="taskStatus btn btn-warning"><i class="fa-solid fa-clock"></i></button>
                                 <button class="taskEdit btn btn-dark"><i class="fa-solid fa-pencil"></i></button>
@@ -154,6 +154,14 @@ $(document).ready(function () {
     }
 
     renderTasks();
+
+
+    // Highlight Function for Search - Sydney G
+    function highlightText(text, keyword) {
+        if (!keyword) return text;
+        const regex = new RegExp(`(${keyword})`, 'gi');
+        return text.replace(regex, '<span class="highlight">$1</span>');
+    }
 
     // New: Search Functionality - Sydney G
         $('#searchInput').on('input', function () {
@@ -181,9 +189,9 @@ $(document).ready(function () {
                         <div class="col taskCard" data-index="${tasks.indexOf(task)}">
                             <div class="card p-3">
                                 <img src="hero.png" class="card-img-top mb-2 rounded">
-                                <h3>${task.title}</h3>
-                                <p>Priority: <b>${getPriority(task.priority)}</b></p>
-                                <p>${task.description}</p>
+                                <h3 class="taskText">${highlightText(task.title, searchTerm)}</h3>
+                                <p class="taskText">Priority: <b>${getPriority(task.priority)}</b></p>
+                                <p>${highlightText(task.description, searchTerm)}</p>
                                 <div class="d-flex gap-2">
                                     <button class="taskStatus btn btn-success"><i class="fa-solid fa-check"></i></button>
                                     <button class="taskEdit btn btn-dark"><i class="fa-solid fa-pencil"></i></button>
@@ -211,8 +219,8 @@ $(document).ready(function () {
                         <div class="col taskCard" data-index="${tasks.indexOf(task)}">
                             <div class="card p-3 ${cardClass}">
                                 <img src="hero.png" class="card-img-top mb-2 rounded">
-                                <h3>${task.title}</h3>
-                                <p>Priority: <b>${getPriority(task.priority)}</b></p>
+                                <h3 class="taskText">${task.title}</h3>
+                                <p class="taskText">Priority: <b>${getPriority(task.priority)}</b></p>
                                 <p>${task.description}</p>
                                 <div class="d-flex gap-2">
                                     <button class="taskStatus btn btn-warning"><i class="fa-solid fa-clock"></i></button>
@@ -227,6 +235,8 @@ $(document).ready(function () {
                 });
             }
         }
+
+
 
     function addTask(tskTitle, tskDesc, tskDate, tskPriority) {
         tasks.push({ title: tskTitle, description: tskDesc, deadline: tskDate, priority: tskPriority, completed: false} );
