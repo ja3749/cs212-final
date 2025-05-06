@@ -143,4 +143,17 @@ header nav a:hover {
 
 .editMenu {
     display: none;
+} 
+
+html {scroll-behavior: smooth;
 }
+
+#searchInput:focus {
+    outline: none;
+    border-color: #CEBBC9;
+    box-shadow: 0 0 5px #594157;
+  }
+
+.highlight {
+    background-color: #BBDBB4;
+  }
